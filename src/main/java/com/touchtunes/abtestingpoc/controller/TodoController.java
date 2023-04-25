@@ -40,7 +40,7 @@ public class TodoController {
 	 *           The unique id of the user
 	 * @return List of Todo
 	 */
-	@GetMapping("{userId}/notes")
+	@GetMapping("{userId}/todos")
 	public List<Todo> getTodosByUserId( @PathVariable Long userId) {
 
 		log.debug("Get Todos of useId - {}, fields - {}", userId);
@@ -108,8 +108,8 @@ public class TodoController {
 	 * @param id
 	 *           The unique id of the Todo
 	 */
-	@DeleteMapping
-	public void deleteTodoById(Long id) {
+	@DeleteMapping("{id}")
+	public void deleteTodoById(@PathVariable Long id) {
 		log.debug("delete todo with id - {}", id);
 		todoService.deleteTodoById(id);
 		log.info("deleted todo: {}", id);
