@@ -7,10 +7,9 @@
  ******************************************************************************/
 package com.touchtunes.abtestingpoc.controller;
 
-import com.touchtunes.abtestingpoc.dto.UserDTO;
+import com.touchtunes.abtestingpoc.entity.User;
 import com.touchtunes.abtestingpoc.service.UserService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.converter.json.MappingJacksonValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,18 +27,18 @@ public class UserController {
 	}
 
 	/**
-	 * Retrieve the user for a specific userId
+	 * Retrieve the user for a specific id
 	 *
-	 * @param userId
+	 * @param id
 	 *           The unique id of the user
-	 * @return UserDTO
+	 * @return User
 	 */
-	@GetMapping("{userId}")
-	public UserDTO getStatusForJukebox(
-			@PathVariable(name = "userId") String userId) {
+	@GetMapping("{id}")
+	public User getStatusForJukebox(
+			@PathVariable Long id) {
 
-		log.debug("Get user with id {}", userId);
-		UserDTO result = userService.getUser(userId);
+		log.debug("Get user with id {}", id);
+		User result = userService.findUserById(id);
 		log.info("Got user: {}", result);
 
 		return result;

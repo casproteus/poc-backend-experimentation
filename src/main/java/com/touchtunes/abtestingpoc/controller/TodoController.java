@@ -7,7 +7,7 @@
  ******************************************************************************/
 package com.touchtunes.abtestingpoc.controller;
 
-import com.touchtunes.abtestingpoc.dto.TodoDTO;
+import com.touchtunes.abtestingpoc.entity.Todo;
 import com.touchtunes.abtestingpoc.service.TodoService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -37,59 +38,81 @@ public class TodoController {
 	 *
 	 * @param userId
 	 *           The unique id of the user
-	 * @return TodoDTO
+	 * @return List of Todo
 	 */
-	@GetMapping("{userId}")
-	public List<TodoDTO> getTodos( @PathVariable(name = "userId") String userId) {
+	@GetMapping("{userId}/todos")
+	public List<Todo> getTodosByUserId( @PathVariable Long userId) {
 
 		log.debug("Get Todos of useId - {}, fields - {}", userId);
-		List<TodoDTO> result = todoService.getTodos(userId);
+		List<Todo> result = todoService.getTodosByUserId(userId);
 		log.info("Got todos: {}", result);
 
 		return result;
 	}
 
 	/**
-	 * Create a todo with given TodoDTO
+	 * Retrieve a Todo by id
 	 *
-	 * @param todoDTO
-	 *           The todo to create
-	 * @return TodoDTO with id
+	 * @param id
+	 *           The unique id of the todo
+	 * @return todo
 	 */
-	@PostMapping
-	public TodoDTO createTodos(TodoDTO todoDTO) {
+	@GetMapping("{id}")
+	public Todo getTodoById( @PathVariable Long id) {
 
-		log.debug("create Todos of useId - {}, todo - {}", todoDTO);
-		TodoDTO result = todoService.createTodo( todoDTO);
-		log.info("Got todos: {}", result);
+		log.debug("Get Todo of id - {}", id);
+		Todo result = todoService.findById(id);
+		log.info("Got todo: {}", result);
 
-		return todoDTO;
+		return result;
 	}
 
 	/**
-	 * update a Todo with given TodoDto
+	 * Create a todo
 	 *
-	 * @param todoDTO
-	 *           The given TODO which will update to
+	 * @param todo
+	 *           The todo to create
+	 * @return todo with id
 	 */
-	@PutMapping
-	public void updateTodo(TodoDTO todoDTO) {
-		log.debug("update Todo to - {}", todoDTO);
-		todoService.updateTodo(todoDTO);
-		log.info("Todo updated");
+	@PostMapping
+	public Todo addTodo(@RequestBody Todo todo) {
+
+		log.debug("create a todo like - {}", todo);
+		Todo result = todoService.createTodo(todo);
+		log.info("created todo: {}", result);
+
+		return todo;
+	}
+
+	/**
+	 * update a Todo
+	 *
+	 * @param id
+	 *           The id of todo which will be updated
+	 * @param todo
+	 *           will update to like what
+	 * @return todo updated todo
+	 */
+	@PutMapping("{id}")
+	public Todo updateTodoById(@PathVariable Long id, @RequestBody Todo todo) {
+		log.debug("update Todo {} to - {}", id, todo);
+		Todo result = todoService.updateTodo(id, todo);
+		log.info("Todo updated to: {}", result);
+
+		return result;
 	}
 
 	/**
 	 * delete a Todo with specific id
 	 *
-	 * @param todoId
+	 * @param id
 	 *           The unique id of the Todo
 	 */
-	@DeleteMapping
-	public void deleteTodo(String todoId) {
-		log.debug("delete Todo of id - {}", todoId);
-		todoService.deleteTodo(todoId);
-		log.info("deleted todo: {}", todoId);
+	@DeleteMapping("{id}")
+	public void deleteTodoById(@PathVariable Long id) {
+		log.debug("delete todo with id - {}", id);
+		todoService.deleteTodoById(id);
+		log.info("deleted todo: {}", id);
 	}
 
 }
