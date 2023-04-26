@@ -1,0 +1,57 @@
+---
+# resources
+cpus: 0.1
+mem: 750
+
+# initial size
+instances: 1
+
+# docker parameters
+container:
+    type: 'DOCKER'
+    docker:
+        image:          'this will be override by parameters or meta informations'
+        forcePullImage: true
+        network:        'BRIDGE'
+        portMappings:
+            - containerPort: 8080
+              hostPort:      0
+              servicePort:   0
+              protocol:      'tcp'
+        parameters:
+            - key:   'net'
+              value: 'cluster-net'
+
+# docker registry credentials
+uris:
+    - 'file://localhost/root/.dockercfg'
+
+healthChecks:
+    - protocol:               "HTTP"
+      path:                   "/actuator/health"
+      gracePeriodSeconds:     60
+      intervalSeconds:        5
+      portIndex:              0
+      timeoutSeconds:         5
+      maxConsecutiveFailures: 5
+
+backoffSeconds:        15
+backoffFactor:         2
+maxLaunchDelaySeconds: 120
+
+env:
+  APP_NAME: 'poc-backend-experimentation'
+  _JAVA_OPTIONS: '-Xms800m -Xmx800m -Xmn100m -XX:MetaspaceSize=100m -XX:MaxMetaspaceSize=175m -XX:-UseContainerSupport -XX:+UseParallelGC -Dhttp.maxConnections=100 -Dhttp.keepAlive=true'
+  MALLOC_ARENA_MAX: '4'
+  PUBLIC_BLOCK_URL_REGEX: '^/management'
+  APP_PORT: '8080'
+
+  LOL: '                                                                                                  '
+
+
+# metadata
+meta:
+  type:         'service'
+  name:         '{APP_NAME}'
+  docker_image: '{APP_NAME}'
+  docker_tag:   '{CONTEXT}-latest'
