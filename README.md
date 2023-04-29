@@ -13,7 +13,7 @@ for the command line user you can start the project using:
 
 follow the steps below:
 
-- Create your docker image and tag it
+- Create your docker image and tag it （if it stuck when running this command, ctrl^C to stop it and rerun).
 
   `docker build . -t docker-apps-dev.artifactory.tsp.cld.touchtunes.com/poc-backend-experimentation:<USERNAME>-latest`
 
@@ -28,18 +28,19 @@ follow the steps below:
   `https://<USERNAME>-poc-backend-experimentation.scaffold-workers-test-us.dev.cld.touchtunes.com`
 
 ## Moji - Push container to Execution Platform
-> To deploy the marathon platform, you must first have installed the [dev-tools](https://wiki.touchtunes.com/display/XP/Marathon+Applications). Choose installation location and then:
+- To deploy the marathon platform, you must first have installed the [dev-tools](https://wiki.touchtunes.com/display/XP/Marathon+Applications). Choose installation location and then:
+  - (if you are not rnning in VM, you can just run the following three commands to make sure programs installed)
+  ```bash
+    pip3 install requests
+    pip3 install pyyaml
+    pip3 install hiyapyco
+  ```
+
 > ```bash
 > git clone ssh://[USERNAME]@gerrit-01.touchtunes.com:29418/dev-tools
 > scp -p -P 29420 [USERNAME]@gerrit-01.touchtunes.com:hooks/commit-msg dev-tools/.git/hooks/
 > ```
 
-In order to run the final command, you need to have the following three programs installed
-```bash
-pip3 install requests
-pip3 install pyyaml
-pip3 install hiyapyco
-```
 
 To setup *Marathon* authentication, you need to create the file `$HOME/.tt.env` that contains the platform configuration:
 ```

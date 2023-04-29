@@ -10,6 +10,8 @@ package com.touchtunes.abtestingpoc.controller;
 import com.touchtunes.abtestingpoc.entity.Todo;
 import com.touchtunes.abtestingpoc.service.TodoService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.crossstore.ChangeSetPersister;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,7 +22,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/todo")
@@ -41,12 +43,14 @@ public class TodoController {
 	 * @return List of Todo
 	 */
 	@GetMapping("{userId}/todos")
-	public List<Todo> getTodosByUserId( @PathVariable Long userId) {
+	public List<Todo> listTodosByUserId( @PathVariable Long userId) throws ChangeSetPersister.NotFoundException {
 
 		log.debug("Get Todos of useId - {}, fields - {}", userId);
 		List<Todo> result = todoService.getTodosByUserId(userId);
 		log.info("Got todos: {}", result);
-
+		if (CollectionUtils.isEmpty(result)) {
+			throw new ChangeSetPersister.NotFoundException();
+		}
 		return result;
 	}
 
@@ -58,10 +62,11 @@ public class TodoController {
 	 * @return todo
 	 */
 	@GetMapping("{id}")
-	public Todo getTodoById( @PathVariable Long id) {
+	public Todo getTodoById( @PathVariable Long id) throws ChangeSetPersister.NotFoundException {
 
 		log.debug("Get Todo of id - {}", id);
-		Todo result = todoService.findById(id);
+		Optional<Todo> optionalTodo = todoService.findById(id);
+		Todo result = optionalTodo.orElseThrow(() -> new ChangeSetPersister.NotFoundException());
 		log.info("Got todo: {}", result);
 
 		return result;
@@ -81,7 +86,7 @@ public class TodoController {
 		Todo result = todoService.createTodo(todo);
 		log.info("created todo: {}", result);
 
-		return todo;
+		return result;
 	}
 
 	/**

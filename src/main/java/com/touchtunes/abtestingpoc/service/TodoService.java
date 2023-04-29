@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -21,8 +22,8 @@ public class TodoService {
 		return todoRepository.findAllByUserId(userId);
 	}
 
-	public Todo findById(Long id) {
-		return todoRepository.findById(id).orElse(null);
+	public Optional<Todo> findById(Long id) {
+		return todoRepository.findById(id);
 	}
 
 	public Todo createTodo(Todo todo) {
