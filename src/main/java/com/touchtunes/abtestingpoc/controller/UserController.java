@@ -24,7 +24,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping("user")
 @Slf4j
 public class UserController {
 
@@ -56,7 +56,7 @@ public class UserController {
 	 * @param id The unique id of the user
 	 * @return User
 	 */
-	@GetMapping("/{id}")
+	@GetMapping("{id}")
 	public User getUserById(@PathVariable Long id) throws ChangeSetPersister.NotFoundException {
 		log.debug("Get user with id {}", id);
 		Optional<User> optionalUser = userService.findUserById(id);
