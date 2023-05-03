@@ -102,7 +102,12 @@ public class TodoController {
 	 * @return todo updated todo
 	 */
 	@PutMapping("{id}")
-	public Todo updateTodoById(@PathVariable Long id, @RequestBody Todo todo) {
+	public Todo updateTodoById(@PathVariable Long id, @RequestBody Todo todo) throws ChangeSetPersister.NotFoundException {
+		log.debug("check if todo exists - {}", id);
+		Optional<Todo> optionalTodo = todoService.findById(id);
+		optionalTodo.orElseThrow(() -> new ChangeSetPersister.NotFoundException());
+		log.debug("todo exists!");
+
 		log.debug("update Todo {} to - {}", id, todo);
 		Todo result = todoService.updateTodo(id, todo);
 		log.info("Todo updated to: {}", result);
