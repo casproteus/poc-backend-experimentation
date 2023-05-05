@@ -35,6 +35,7 @@ import java.util.Optional;
 @Slf4j
 public class TodoController {
 
+	public static final String VISITOR_UNIQUE_ID = "Visitor-Unique-Id";
 	private final TodoService todoService;
 
 	public TodoController(TodoService todoService) {
@@ -70,12 +71,12 @@ public class TodoController {
 	@GetMapping("{id}")
 	public Todo getTodoById(
 			@PathVariable Long id,
-			@RequestHeader("Visitor-Unique-Id") String visitorUniqueId)
+			@RequestHeader(VISITOR_UNIQUE_ID) String visitorUniqueId)
 			throws ChangeSetPersister.NotFoundException {
 
 		log.debug("Get Todo of id - {}", id);
-		Optional<Todo> optionalTodo = todoService.findById(id, visitorUniqueId);
-		Todo result = optionalTodo.orElseThrow(() -> new ChangeSetPersister.NotFoundException());
+		Todo result = todoService.findById(id, visitorUniqueId)
+				.orElseThrow(() -> new ChangeSetPersister.NotFoundException());
 		log.info("Got todo: {}", result);
 
 		return result;
@@ -111,11 +112,11 @@ public class TodoController {
 	public Todo updateTodoById(
 			@PathVariable Long id,
 			@RequestBody Todo todo,
-			@RequestHeader("Visitor-Unique-Id") String visitorUniqueId)
+			@RequestHeader(VISITOR_UNIQUE_ID) String visitorUniqueId)
 			throws ChangeSetPersister.NotFoundException {
 		log.debug("check if todo exists - {}", id);
-		Optional<Todo> optionalTodo = todoService.findById(id, visitorUniqueId);
-		optionalTodo.orElseThrow(() -> new ChangeSetPersister.NotFoundException());
+		todoService.findById(id, visitorUniqueId)
+				.orElseThrow(() -> new ChangeSetPersister.NotFoundException());
 		log.debug("todo exists!");
 
 		log.debug("update Todo {} to - {}", id, todo);
@@ -134,11 +135,11 @@ public class TodoController {
 	@DeleteMapping("{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void deleteTodoById(@PathVariable Long id,
-			@RequestHeader("Visitor-Unique-Id") String visitorUniqueId)
+			@RequestHeader(VISITOR_UNIQUE_ID) String visitorUniqueId)
 			throws ChangeSetPersister.NotFoundException {
 		log.debug("check if todo exists - {}", id);
-		Optional<Todo> optionalTodo = todoService.findById(id, visitorUniqueId);
-		optionalTodo.orElseThrow(() -> new ChangeSetPersister.NotFoundException());
+		todoService.findById(id, visitorUniqueId)
+				.orElseThrow(() -> new ChangeSetPersister.NotFoundException());
 		log.debug("todo exists!");
 
 		log.debug("delete todo with id - {}", id);
