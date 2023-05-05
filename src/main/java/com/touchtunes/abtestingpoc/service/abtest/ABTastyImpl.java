@@ -3,6 +3,7 @@ package com.touchtunes.abtestingpoc.service.abtest;
 import com.abtasty.flagship.main.Flagship;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.util.concurrent.ExecutionException;
@@ -11,6 +12,8 @@ import java.util.concurrent.ExecutionException;
 @Component
 public class ABTastyImpl implements ABTestSolution {
 
+	@Value("${abtasty.primaryKey}")
+	private String PRIMARY_KPI;
 	@Override
 	public boolean isMammalFilter() {
 
@@ -24,7 +27,7 @@ public class ABTastyImpl implements ABTestSolution {
 			log.info("ExecutionException: {}", e);
 			throw new RuntimeException(e);
 		}
-		Boolean featureFlag = visitor.getFlag("M4POC1BE-apply-mammal-filter", false).value(false);
+		Boolean featureFlag = visitor.getFlag(PRIMARY_KPI, false).value(false);
 		log.info("featureFlag: {}", featureFlag);
 		return featureFlag;
 	}
