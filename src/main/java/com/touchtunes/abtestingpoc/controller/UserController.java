@@ -7,11 +7,9 @@
  ******************************************************************************/
 package com.touchtunes.abtestingpoc.controller;
 
-import com.abtasty.flagship.main.Flagship;
 import com.touchtunes.abtestingpoc.entity.User;
 import com.touchtunes.abtestingpoc.service.UserService;
 import lombok.extern.slf4j.Slf4j;
-import lombok.val;
 import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.http.HttpStatus;
 import org.springframework.util.CollectionUtils;
@@ -66,11 +64,6 @@ public class UserController {
 		Optional<User> optionalUser = userService.findUserById(id);
 		User result = optionalUser.orElseThrow(() -> new ChangeSetPersister.NotFoundException());
 		log.info("Got user: {}", result);
-
-		val visitor = Flagship.newVisitor("visitor_unique_id").build();
-		visitor.fetchFlags().get();
-		Boolean featureFlag = visitor.getFlag("M4POC1BE-apply-mammal-filter", false).value(false);
-		log.info("featureFlag: {}", featureFlag);
 
 		return result;
 	}

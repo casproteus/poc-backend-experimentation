@@ -1,5 +1,6 @@
 package com.touchtunes.abtestingpoc.entity;
 
+import com.touchtunes.abtestingpoc.service.abtest.Mammal;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -23,5 +24,6 @@ public class Todo {
 	private String title;
 	private String description;
 	private Integer status;
+	private Mammal mammal;
 	private Long userId;
 }
