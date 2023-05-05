@@ -28,10 +28,10 @@ public class TodoService {
 		return todoRepository.findAllByUserId(userId);
 	}
 
-	public Optional<Todo> findById(Long id) {
+	public Optional<Todo> findById(Long id, String visitorUniqueId) {
 		Optional<Todo> optionalTodo = todoRepository.findById(id);
 
-		if (!optionalTodo.isPresent() || !abTestSolution.isMammalFilter()) {
+		if (!optionalTodo.isPresent() || !abTestSolution.isMammalFilter(visitorUniqueId)) {
 			return optionalTodo;
 		}
 		Todo todo = optionalTodo.get();

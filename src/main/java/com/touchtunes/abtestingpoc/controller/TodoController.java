@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
@@ -67,10 +68,13 @@ public class TodoController {
 	 * @return todo
 	 */
 	@GetMapping("{id}")
-	public Todo getTodoById( @PathVariable Long id) throws ChangeSetPersister.NotFoundException {
+	public Todo getTodoById(
+			@PathVariable Long id,
+			@RequestHeader("Visitor-Unique-Id") String visitorUniqueId)
+			throws ChangeSetPersister.NotFoundException {
 
 		log.debug("Get Todo of id - {}", id);
-		Optional<Todo> optionalTodo = todoService.findById(id);
+		Optional<Todo> optionalTodo = todoService.findById(id, visitorUniqueId);
 		Todo result = optionalTodo.orElseThrow(() -> new ChangeSetPersister.NotFoundException());
 		log.info("Got todo: {}", result);
 
@@ -104,9 +108,13 @@ public class TodoController {
 	 * @return todo updated todo
 	 */
 	@PutMapping("{id}")
-	public Todo updateTodoById(@PathVariable Long id, @RequestBody Todo todo) throws ChangeSetPersister.NotFoundException {
+	public Todo updateTodoById(
+			@PathVariable Long id,
+			@RequestBody Todo todo,
+			@RequestHeader("Visitor-Unique-Id") String visitorUniqueId)
+			throws ChangeSetPersister.NotFoundException {
 		log.debug("check if todo exists - {}", id);
-		Optional<Todo> optionalTodo = todoService.findById(id);
+		Optional<Todo> optionalTodo = todoService.findById(id, visitorUniqueId);
 		optionalTodo.orElseThrow(() -> new ChangeSetPersister.NotFoundException());
 		log.debug("todo exists!");
 
@@ -125,9 +133,11 @@ public class TodoController {
 	 */
 	@DeleteMapping("{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void deleteTodoById(@PathVariable Long id) throws ChangeSetPersister.NotFoundException {
+	public void deleteTodoById(@PathVariable Long id,
+			@RequestHeader("Visitor-Unique-Id") String visitorUniqueId)
+			throws ChangeSetPersister.NotFoundException {
 		log.debug("check if todo exists - {}", id);
-		Optional<Todo> optionalTodo = todoService.findById(id);
+		Optional<Todo> optionalTodo = todoService.findById(id, visitorUniqueId);
 		optionalTodo.orElseThrow(() -> new ChangeSetPersister.NotFoundException());
 		log.debug("todo exists!");
 

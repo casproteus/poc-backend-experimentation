@@ -12,12 +12,12 @@ import java.util.concurrent.ExecutionException;
 @Component
 public class ABTastyImpl implements ABTestSolution {
 
-	@Value("${abtasty.primaryKey}")
-	private String PRIMARY_KPI;
+	@Value("${abtasty.flagKey}")
+	private String FLAG_KPI;
 	@Override
-	public boolean isMammalFilter() {
+	public boolean isMammalFilter(String visitorUniqueId) {
 
-		val visitor = Flagship.newVisitor("visitor_unique_id").build();
+		val visitor = Flagship.newVisitor(visitorUniqueId).build();
 		try {
 			visitor.fetchFlags().get();
 		} catch (InterruptedException e) {
@@ -27,7 +27,7 @@ public class ABTastyImpl implements ABTestSolution {
 			log.info("ExecutionException: {}", e);
 			throw new RuntimeException(e);
 		}
-		Boolean featureFlag = visitor.getFlag(PRIMARY_KPI, false).value(false);
+		Boolean featureFlag = visitor.getFlag(FLAG_KPI, false).value(false);
 		log.info("featureFlag: {}", featureFlag);
 		return featureFlag;
 	}
