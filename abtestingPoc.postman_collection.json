@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "1ff2f2c3-259b-40a5-a83c-23a6af64c927",
+		"_postman_id": "e1f73736-3741-447e-a3f1-186fcb31d024",
 		"name": "abtestingPoc",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -90,15 +90,21 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"title\":\"maintain-now\",\n    \"description\": \"maintain the webservices\",\n    \"status\": 0,\n    \"userId\": 3\n}"
+					"raw": "{\n    \"title\":\"feed my Panda\",\n    \"description\": \"feed my Panda with bamboo\",\n    \"status\": 0,\n    \"userId\": 1\n}"
 				},
 				"url": {
-					"raw": "{{ABTestPocBackendAppHost}}/todo",
+					"raw": "{{ABTestPocBackendAppHost}}/todo?",
 					"host": [
 						"{{ABTestPocBackendAppHost}}"
 					],
 					"path": [
 						"todo"
+					],
+					"query": [
+						{
+							"key": "",
+							"value": null
+						}
 					]
 				}
 			},
@@ -113,20 +119,25 @@
 						"key": "Content-Type",
 						"value": "application/json",
 						"type": "default"
+					},
+					{
+						"key": "Visitor-Unique-Id",
+						"value": "visitor_unique_id",
+						"type": "default"
 					}
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"title\":\"aaa---now\",\n    \"description\": \"bbb----aaaaaaaa\",\n    \"status\": 2,\n    \"userId\": 12\n}"
+					"raw": "{\n    \"title\":\"feed RACCOON\",\n    \"description\": \"Don't forget to feed the RACCOON every night! otherwise the RACCOON will cook cat!\",\n    \"status\": 2,\n    \"userId\": 3\n}"
 				},
 				"url": {
-					"raw": "{{ABTestPocBackendAppHost}}/todo/9",
+					"raw": "{{ABTestPocBackendAppHost}}/todo/4",
 					"host": [
 						"{{ABTestPocBackendAppHost}}"
 					],
 					"path": [
 						"todo",
-						"9"
+						"4"
 					]
 				}
 			},
@@ -136,15 +147,27 @@
 			"name": "delete a todo",
 			"request": {
 				"method": "DELETE",
-				"header": [],
+				"header": [
+					{
+						"key": "Visitor-Unique-Id",
+						"value": "visitor_unique_id",
+						"type": "default"
+					}
+				],
 				"url": {
-					"raw": "{{ABTestPocBackendAppHost}}/todo/9",
+					"raw": "{{ABTestPocBackendAppHost}}/todo/9?",
 					"host": [
 						"{{ABTestPocBackendAppHost}}"
 					],
 					"path": [
 						"todo",
 						"9"
+					],
+					"query": [
+						{
+							"key": "",
+							"value": null
+						}
 					]
 				}
 			},
